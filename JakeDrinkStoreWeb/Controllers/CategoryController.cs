@@ -1,14 +1,14 @@
 ﻿using JakeDrinkStore.DataAccess;
+using JakeDrinkStore.DataAccess.Repository.IRepository;
 using JakeDrinkStore.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace JakeDrinkStoreWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public CategoryController(ApplicationDbContext db)
+        private readonly ICategoryRepository _db;
+        public CategoryController(ICategoryRepository db)
         {
             _db = db;
         }
@@ -16,7 +16,7 @@ namespace JakeDrinkStoreWeb.Controllers
         // GET
         public IActionResult Index()
         {
-            IEnumerable<Category> objCategoryList = _db.Categories;
+            IEnumerable<Category> objCategoryList = _db.GetAll();
             return View(objCategoryList);
         }
 
@@ -31,7 +31,7 @@ namespace JakeDrinkStoreWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category obj)
         {
-            bool isExist = await _db.Categories.AnyAsync(c => c.Name.ToLower() == obj.Name.ToLower());
+            bool isExist = await _db.AnyAsync(c => c.Name.ToLower() == obj.Name.ToLower());
 
             if (isExist)
             {
@@ -41,8 +41,8 @@ namespace JakeDrinkStoreWeb.Controllers
             
             if (ModelState.IsValid && !isExist)
             {
-                _db.Categories.Add(obj);
-                _db.SaveChanges();
+                _db.Add(obj);
+                _db.Save();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
@@ -57,7 +57,7 @@ namespace JakeDrinkStoreWeb.Controllers
                 return NotFound();
             }
 
-            Category? categoryFromDb = _db.Categories.FirstOrDefault(c => c.Id == id);
+            Category? categoryFromDb = _db.GetFirstOrDefault(c => c.Id == id);
 
             if (categoryFromDb == null)
             {
@@ -72,8 +72,8 @@ namespace JakeDrinkStoreWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Category obj)
         {
-            bool isSameName = await _db.Categories.AnyAsync(c => c.Name.ToLower() == obj.Name.ToLower());
-            bool isSameDate = await _db.Categories.AnyAsync(c => c.CreatedDateTime == obj.CreatedDateTime);
+            bool isSameName = await _db.AnyAsync(c => c.Name.ToLower() == obj.Name.ToLower());
+            bool isSameDate = await _db.AnyAsync(c => c.CreatedDateTime == obj.CreatedDateTime);
 
             if (isSameName && isSameDate)
             {
@@ -83,8 +83,8 @@ namespace JakeDrinkStoreWeb.Controllers
 
             if (ModelState.IsValid && (!isSameName || !isSameDate))
             {
-                _db.Categories.Update(obj);
-                _db.SaveChanges();
+                _db.Update(obj);
+                _db.Save();
                 TempData["success"] = "Category updated successfully";
                 return RedirectToAction("Index");
             }
@@ -100,7 +100,7 @@ namespace JakeDrinkStoreWeb.Controllers
                 return NotFound();
             }
 
-            Category? categoryFromDb = _db.Categories.FirstOrDefault(c => c.Id == id);
+            Category? categoryFromDb = _db.GetFirstOrDefault(c => c.Id == id);
 
             if (categoryFromDb == null)
             {
@@ -115,15 +115,15 @@ namespace JakeDrinkStoreWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePOST(Guid? id)
         {
-            var categoryFromDb = _db.Categories.FirstOrDefault(u => u.Id == id);
+            var categoryFromDb = _db.GetFirstOrDefault(u => u.Id == id);
 
             if (categoryFromDb == null)
             {
                 return NotFound();
             }
 
-            _db.Categories.Remove(categoryFromDb); 
-            _db.SaveChanges();
+            _db.Remove(categoryFromDb); 
+            _db.Save();
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
         }
