@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace JakeDrinkStore.DataAccess.Repository.IRepository
 {
-    public interface ICategoryRepository : IRepository<Category>
+    public interface IDrinkTypeRepository : IRepository<DrinkType>
     {
-        void Update(Category category);
+        void Update(DrinkType drinkType);
     }
 }

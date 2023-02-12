@@ -9,6 +9,7 @@ namespace JakeDrinkStore.DataAccess
 
         // Create Tables in Database using Models
         public DbSet<Category> Categories { get; set; }
+        public DbSet<DrinkType> DrinkTypes { get; set; }
 
     }
 }

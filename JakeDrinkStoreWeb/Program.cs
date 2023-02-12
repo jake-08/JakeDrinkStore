@@ -18,8 +18,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
     builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// Register ICategoryRepository to the container
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+// Register IUnitOfWork to the container
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 

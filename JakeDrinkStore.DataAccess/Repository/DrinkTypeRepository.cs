@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace JakeDrinkStore.DataAccess.Repository
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRepository
+    public class DrinkTypeRepository : Repository<DrinkType>, IDrinkTypeRepository
     {
         // Repository class requires ApplicationDbContext
         private readonly ApplicationDbContext _db;
-        public CategoryRepository(ApplicationDbContext db) :base(db)
+        public DrinkTypeRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
 
-        public void Update(Category category)
+        public void Update(DrinkType drinkType)
         {
-            _db.Categories.Update(category);
+            _db.DrinkTypes.Update(drinkType);
         }
     }
 }

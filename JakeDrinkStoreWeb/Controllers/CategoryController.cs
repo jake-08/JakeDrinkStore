@@ -7,16 +7,16 @@ namespace JakeDrinkStoreWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository _db;
-        public CategoryController(ICategoryRepository db)
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
 
         // GET
         public IActionResult Index()
         {
-            IEnumerable<Category> objCategoryList = _db.GetAll();
+            IEnumerable<Category> objCategoryList = _unitOfWork.Category.GetAll();
             return View(objCategoryList);
         }
 
@@ -31,7 +31,7 @@ namespace JakeDrinkStoreWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category obj)
         {
-            bool isExist = await _db.AnyAsync(c => c.Name.ToLower() == obj.Name.ToLower());
+            bool isExist = await _unitOfWork.Category.AnyAsync(c => c.Name.ToLower() == obj.Name.ToLower());
 
             if (isExist)
             {
@@ -41,8 +41,8 @@ namespace JakeDrinkStoreWeb.Controllers
             
             if (ModelState.IsValid && !isExist)
             {
-                _db.Add(obj);
-                _db.Save();
+                _unitOfWork.Category.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
@@ -57,7 +57,7 @@ namespace JakeDrinkStoreWeb.Controllers
                 return NotFound();
             }
 
-            Category? categoryFromDb = _db.GetFirstOrDefault(c => c.Id == id);
+            Category? categoryFromDb = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
 
             if (categoryFromDb == null)
             {
@@ -72,19 +72,19 @@ namespace JakeDrinkStoreWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Category obj)
         {
-            bool isSameName = await _db.AnyAsync(c => c.Name.ToLower() == obj.Name.ToLower());
-            bool isSameDate = await _db.AnyAsync(c => c.CreatedDateTime == obj.CreatedDateTime);
+            bool isSameName = await _unitOfWork.Category.AnyAsync(c => c.Name.ToLower() == obj.Name.ToLower());
+            bool isSameDate = await _unitOfWork.Category.AnyAsync(c => c.CreatedDateTime == obj.CreatedDateTime);
 
             if (isSameName && isSameDate)
             {
                 ModelState.AddModelError("Name", "The Category Name already exists.");
-                ModelState.AddModelError("CreatedDateTime", "The Category Date is the same.");
+                ModelState.AddModelError("CreatedDateTime", "The Category Created Date is the same.");
             }
 
             if (ModelState.IsValid && (!isSameName || !isSameDate))
             {
-                _db.Update(obj);
-                _db.Save();
+                _unitOfWork.Category.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category updated successfully";
                 return RedirectToAction("Index");
             }
@@ -100,7 +100,7 @@ namespace JakeDrinkStoreWeb.Controllers
                 return NotFound();
             }
 
-            Category? categoryFromDb = _db.GetFirstOrDefault(c => c.Id == id);
+            Category? categoryFromDb = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
 
             if (categoryFromDb == null)
             {
@@ -115,15 +115,15 @@ namespace JakeDrinkStoreWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePOST(Guid? id)
         {
-            var categoryFromDb = _db.GetFirstOrDefault(u => u.Id == id);
+            var categoryFromDb = _unitOfWork.Category.GetFirstOrDefault(u => u.Id == id);
 
             if (categoryFromDb == null)
             {
                 return NotFound();
             }
 
-            _db.Remove(categoryFromDb); 
-            _db.Save();
+            _unitOfWork.Category.Remove(categoryFromDb);
+            _unitOfWork.Save();
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
         }
