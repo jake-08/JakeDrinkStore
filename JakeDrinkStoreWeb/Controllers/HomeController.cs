@@ -1,4 +1,4 @@
-﻿using JakeDrinkStoreWeb.Models;
+﻿using JakeDrinkStore.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

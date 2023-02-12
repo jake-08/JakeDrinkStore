@@ -1,4 +1,4 @@
-namespace JakeDrinkStoreWeb.Models
+namespace JakeDrinkStore.Models
 {
     public class ErrorViewModel
     {

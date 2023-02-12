@@ -1,7 +1,20 @@
+using JakeDrinkStore.DataAccess;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+/* Add services to the container.*/
+
+// Configure MVC features to use Controller and Views 
 builder.Services.AddControllersWithViews();
+
+// To allow Razor Page Refresh
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); 
+
+// Add Database Connection from appsettings.json and add DbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
+    builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
 var app = builder.Build();
 
