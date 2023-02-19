@@ -2,6 +2,7 @@ using JakeDrinkStore.DataAccess;
 using JakeDrinkStore.DataAccess.Repository;
 using JakeDrinkStore.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configure MVC features to use Controller and Views 
 builder.Services.AddControllersWithViews();
+
+// To ignore Object Cycles
+builder.Services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 // To allow Razor Page Refresh
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); 
@@ -40,6 +44,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

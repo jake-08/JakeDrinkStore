@@ -24,3 +24,32 @@ body {
     white-space: nowrap;
     line-height: 60px;
 }
+
+/* Override select2 css Start */
+.select2-container .select2-selection--multiple, .select2-container .select2-selection--single {
+    height: 38px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 35px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px !important;
+}
+/* Override select2 css End */
+
+/* Datatable css Start */
+table.dataTable thead th, table.dataTable thead td {
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+}
+/* Datatable css End */
+
+/* Bootstrap css Start */
+.card-img {
+    height: 370px;
+    width: 150px;
+    object-fit: cover;
+}
+/* Bootstrap css Start */
+

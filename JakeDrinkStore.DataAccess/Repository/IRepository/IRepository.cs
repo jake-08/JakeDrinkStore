@@ -8,8 +8,8 @@ namespace JakeDrinkStore.DataAccess.Repository.IRepository
     /// <typeparam name="T"></typeparam>
     public interface IRepository<T> where T : class
     {
-        T GetFirstOrDefault(Expression<Func<T, bool>> filter);
-        IEnumerable<T> GetAll();
+        T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
         Task<bool> AnyAsync(Expression<Func<T, bool>> filter);
         void Add(T entity);
         void Remove(T entity);
