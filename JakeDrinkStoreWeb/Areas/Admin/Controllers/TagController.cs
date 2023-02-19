@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class TagController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
