@@ -5,7 +5,7 @@
         ITagRepository Tag { get; }
         IDrinkTypeRepository DrinkType { get; }
         IProductRepository Product { get; }
-        IProductTagRepository ProductTag { get; }
+        ProductTagRepository ProductTag { get; }
         ICompanyRepository Company { get; }
         void Save();
     }

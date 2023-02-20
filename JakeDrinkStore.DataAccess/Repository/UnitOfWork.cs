@@ -9,7 +9,7 @@ namespace JakeDrinkStore.DataAccess.Repository
         public ITagRepository Tag { get; private set; }
         public IDrinkTypeRepository DrinkType { get; private set; }
         public IProductRepository Product { get; private set; }
-        public IProductTagRepository ProductTag { get; private set; }
+        public ProductTagRepository ProductTag { get; private set; }
         public ICompanyRepository Company { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
