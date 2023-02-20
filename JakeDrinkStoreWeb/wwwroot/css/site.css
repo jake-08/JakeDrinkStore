@@ -17,6 +17,10 @@ body {
     margin-bottom: 60px;
 }
 
+#tblData thead > tr > th:last-of-type, #tblData tbody > tr > td:last-of-type {
+    text-align: center;
+}
+
 .footer {
     position: absolute;
     bottom: 0;

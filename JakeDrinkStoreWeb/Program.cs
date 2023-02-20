@@ -4,6 +4,8 @@ using JakeDrinkStore.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using JakeDrinkStore.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,9 +26,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 );
 
 // Add Identity Services to the application
+// AddDefaultTokenProviders for Custom Identity, not required in AddDefaultIdentity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+// Register IEmailSender for Custom Identity as a Singleton service
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
 // Register IUnitOfWork to the container
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

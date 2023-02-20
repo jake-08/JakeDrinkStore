@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using JakeDrinkStore.Utility
+@{
+    string path = Context.Request.Path;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -13,26 +17,27 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Jake Drink Store</a>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fw-normal py-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">Jake Drink Store</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link @(path == "/" ? "active" : "")" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                            <a class="nav-link dropdown-toggle @(path.StartsWith("/Admin") ? "active" : "")" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
                             <div class="dropdown-menu">
-                                <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index">Drinks</a>
+                                <a class="nav-link @(path.Contains("Product") ? "active" : "")" asp-area="Admin" asp-controller="Product" asp-action="Index">Drinks</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="nav-link" asp-area="Admin" asp-controller="DrinkType" asp-action="Index">Drink Types</a>
-                                <a class="nav-link" asp-area="Admin" asp-controller="Tag" asp-action="Index">Tags</a>
+                                <a class="nav-link @(path.Contains("DrinkType") ? "active" : "")" asp-area="Admin" asp-controller="DrinkType" asp-action="Index">Drink Types</a>
+                                <a class="nav-link @(path.Contains("Tag") ? "active" : "")" asp-area="Admin" asp-controller="Tag" asp-action="Index">Tags</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="nav-link" asp-area="Admin" asp-controller="Company" asp-action="Index">Company</a>
+                                <a class="nav-link @(path.Contains("Company") ? "active" : "")" asp-area="Admin" asp-controller="Company" asp-action="Index">Companies</a>
+                                <a class="nav-link @(path.Contains("User") ? "active" : "")" asp-area="Admin" asp-controller="User" asp-action="Index">Users</a>
                             </div>
                         </li>
                     </ul>

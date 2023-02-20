@@ -4074,7 +4074,7 @@ textarea.form-control-lg {
     list-style: none
 }
 
-    .navbar-nav .nav-link.active, .navbar-nav .show > .nav-link {
+    .navbar-nav .nav-link.active {
         color: var(--bs-navbar-active-color)
     }
 

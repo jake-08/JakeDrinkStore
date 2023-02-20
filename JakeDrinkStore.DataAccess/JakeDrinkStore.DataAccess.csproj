@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JakeBookStore.Models\JakeDrinkStore.Models.csproj" />
+    <ProjectReference Include="..\JakeDrinkStore.Models\JakeDrinkStore.Models.csproj" />
   </ItemGroup>
 
 </Project>

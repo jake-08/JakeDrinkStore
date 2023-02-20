@@ -5,11 +5,11 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JakeDrinkStoreWeb", "JakeDrinkStoreWeb\JakeDrinkStoreWeb.csproj", "{CE8E21FB-49B6-462E-915B-902B7EAA9BB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JakeDrinkStore.DataAccess", "JakeDrinkStore.DataAccess\JakeDrinkStore.DataAccess.csproj", "{A04B7D3C-28D5-4B2E-8F66-D3506831712A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JakeDrinkStore.DataAccess", "JakeDrinkStore.DataAccess\JakeDrinkStore.DataAccess.csproj", "{A04B7D3C-28D5-4B2E-8F66-D3506831712A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JakeDrinkStore.Models", "JakeBookStore.Models\JakeDrinkStore.Models.csproj", "{1D7808D8-5D6A-445A-9CDC-83714B887F98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JakeDrinkStore.Utility", "JakeDrinkStore.Utility\JakeDrinkStore.Utility.csproj", "{14E0B135-8C00-40AF-964C-63B846972B7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JakeDrinkStore.Utility", "JakeDrinkStore.Utility\JakeDrinkStore.Utility.csproj", "{14E0B135-8C00-40AF-964C-63B846972B7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JakeDrinkStore.Models", "JakeDrinkStore.Models\JakeDrinkStore.Models.csproj", "{34D461B4-C08A-4F46-B531-B801FFAE37AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +25,14 @@ Global
 		{A04B7D3C-28D5-4B2E-8F66-D3506831712A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A04B7D3C-28D5-4B2E-8F66-D3506831712A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A04B7D3C-28D5-4B2E-8F66-D3506831712A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1D7808D8-5D6A-445A-9CDC-83714B887F98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1D7808D8-5D6A-445A-9CDC-83714B887F98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1D7808D8-5D6A-445A-9CDC-83714B887F98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1D7808D8-5D6A-445A-9CDC-83714B887F98}.Release|Any CPU.Build.0 = Release|Any CPU
 		{14E0B135-8C00-40AF-964C-63B846972B7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{14E0B135-8C00-40AF-964C-63B846972B7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14E0B135-8C00-40AF-964C-63B846972B7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14E0B135-8C00-40AF-964C-63B846972B7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34D461B4-C08A-4F46-B531-B801FFAE37AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34D461B4-C08A-4F46-B531-B801FFAE37AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34D461B4-C08A-4F46-B531-B801FFAE37AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34D461B4-C08A-4F46-B531-B801FFAE37AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

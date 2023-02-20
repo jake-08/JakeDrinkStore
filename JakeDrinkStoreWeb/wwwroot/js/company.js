@@ -12,8 +12,9 @@ function loadDataTable() {
         "columns": [
             { "data": "name", "className": "align-middle" }, // the data value should match the API Json key
             { "data": "streetAddress", "className": "align-middle" },
-            { "data": "city", "className": "align-middle" },
+            { "data": "suburb", "className": "align-middle" },
             { "data": "state", "className": "align-middle" },
+            { "data": "postcode", "className": "align-middle" },
             { "data": "phoneNumber", "className": "align-middle" },
             {
                 "data": "id",
