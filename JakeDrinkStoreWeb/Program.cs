@@ -23,7 +23,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
     builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ApplicationDbContext>();
+// Add Identity Services to the application
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddDefaultTokenProviders()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Register IUnitOfWork to the container
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -45,6 +48,9 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+// MapRazorPage function for Identity Pages
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",

@@ -10,6 +10,7 @@ namespace JakeDrinkStore.DataAccess.Repository
         public IDrinkTypeRepository DrinkType { get; private set; }
         public IProductRepository Product { get; private set; }
         public IProductTagRepository ProductTag { get; private set; }
+        public ICompanyRepository Company { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         { 
@@ -18,6 +19,7 @@ namespace JakeDrinkStore.DataAccess.Repository
             DrinkType = new DrinkTypeRepository(_db);
             Product = new ProductRepository(_db);
             ProductTag = new ProductTagRepository(_db);
+            Company = new CompanyRepository(_db);
         }
         public void Save()
         {

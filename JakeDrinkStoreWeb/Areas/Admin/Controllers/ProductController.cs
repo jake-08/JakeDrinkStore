@@ -55,7 +55,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
             else
             {
                 // Get the product including ProductTags based on id 
-                Product? product = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id, includeProperties: "ProductTags");
+                Product? product = _unitOfWork.Product.GetFirstOrDefault(p => p.Id == id, includeProperties: "ProductTags");
 
                 if (product == null) 
                 {
@@ -123,6 +123,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
                     obj.Product.ImageUrl = @"\images\drink-images\" + fileName + extension;
                 }    
 
+                // Create Product
                 if (obj.Product.Id == 0)
                 {
                     foreach (var tag in obj.TagIds)
@@ -136,9 +137,10 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
                         };
                         obj.Product.ProductTags.Add(productTag);
                     }
-
                     _unitOfWork.Product.Add(obj.Product);
+                    TempData["success"] = "Product created successfully";
                 }
+                // Update Product
                 else
                 {
                     // Get the product including ProductTags based on id 
@@ -155,12 +157,10 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
                         };
                         obj.Product.ProductTags.Add(productTag);
                     }
-
                     _unitOfWork.Product.Update(obj.Product);
+                    TempData["success"] = "Product updated successfully";
                 }
-
                 _unitOfWork.Save();
-                TempData["success"] = "Product created successfully";
                 return RedirectToAction("Index");
             }
             return View(obj);

@@ -2,8 +2,8 @@
 
 namespace JakeDrinkStore.DataAccess.Repository.IRepository
 {
-    public interface ITagRepository : IRepository<Tag>
+    public interface ICompanyRepository : IRepository<Company>
     {
-        void Update(Tag tag);
+        void Update(Company company);
     }
 }

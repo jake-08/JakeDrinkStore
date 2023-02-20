@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JakeDrinkStore.DataAccess
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
 
@@ -14,6 +14,8 @@ namespace JakeDrinkStore.DataAccess
         public DbSet<DrinkType> DrinkTypes { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductTag> ProductTags { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Company> Companies { get; set; }
 
     }
 }
