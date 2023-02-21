@@ -7,6 +7,7 @@
         IProductRepository Product { get; }
         ProductTagRepository ProductTag { get; }
         ICompanyRepository Company { get; }
+        IApplicationUserRepository ApplicationUser { get; }
         void Save();
     }
 }

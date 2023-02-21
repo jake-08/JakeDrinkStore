@@ -28,7 +28,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
 
         // GET
         /// <summary>
-        /// Create and Update Product GET Function
+        /// Create and Update Product
         /// </summary>
         public IActionResult Upsert(int? id)
         {
@@ -86,7 +86,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
 
         // POST 
         /// <summary>
-        /// Create and Update Product POST Function
+        /// Create and Update Product
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
