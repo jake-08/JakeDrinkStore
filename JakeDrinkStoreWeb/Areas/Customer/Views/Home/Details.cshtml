@@ -9,10 +9,10 @@
                 <p class="text-warning mb-0 fw-bold">by @Model.Product.Brand</p>
             </div>
             <div class="col-12 col-md-6 text-end pt-4">
-                <span class="badge bg-info pt-2" style="height:30px;">@Model.Product.DrinkType.Name</span>
+                <span class="badge bg-info pt-2 fw-bold" style="height:30px;">@Model.Product.DrinkType.Name</span>
                 @foreach (var tag in Model.Product.ProductTags)
                 {
-                    <span class="badge bg-warning pt-2" style="height:30px;">@tag.Tag.Name</span>
+                    <span class="badge bg-warning fw-bold pt-2" style="height:30px;">@tag.Tag.Name</span>
                 }
             </div>
         </div>
@@ -25,16 +25,16 @@
                             <h5 class="text-dark pb-2">@Html.Raw(Model.Product.Description)</h5>
                         </div>
                         <div class="row text-center ms-0">
-                            <div class="p-1 col-3 bg-dark text-white border-bottom">
+                            <div class="p-1 col-3 bg-primary text-white border-bottom">
                                 <div></div>
                             </div>
-                            <div class="p-1 col-3 bg-dark text-white fw-bold border-bottom">
+                            <div class="p-1 col-3 bg-primary  text-white fw-bold border-bottom">
                                 <div>Individual</div>
                             </div>
-                            <div class="p-1 col-3 bg-dark text-white fw-bold border-bottom">
-                                <div>Case Price (@Model.Product.QuantityPerCase items)</div>
+                            <div class="p-1 col-3 bg-primary  text-white fw-bold border-bottom">
+                                <div>Case Price</div>
                             </div>
-                            <div class="p-1 col-3 bg-dark text-white fw-bold border-bottom">
+                            <div class="p-1 col-3 bg-primary  text-white fw-bold border-bottom">
                                 <div>Bulk Price</div>
                             </div>
                         </div>
@@ -46,13 +46,13 @@
                                 <div>1 item</div>
                             </div>
                             <div class="p-1 col-3 bg-light border-bottom">
-                                <div>1 case </div>
+                                <div>1 (@Model.Product.QuantityPerCase items)</div>
                             </div>
                             <div class="p-1 col-3 bg-light border-bottom">
                                 <div>> @Model.Product.MinBulkCase cases</div>
                             </div>
                         </div>
-                        <div class="row text-center ms-0" style="color:maroon; font-weight:bold">
+                        <div class="row text-center ms-0 text-primary" style="font-weight:bold">
                             <div class="p-1 col-3 bg-light">
                                 <div>Price</div>
                             </div>
@@ -84,10 +84,10 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col-12 col-md-6 pb-1">
-                    <button class="btn btn-success form-control" style="height:50px;" asp-action="Index">Back to Home</button>
+                    <button class="btn btn-success form-control fw-bold" style="height:50px;" asp-action="Index">Back to Home</button>
                 </div>
                 <div class="col-12 col-md-6 pb-1">
-                    <button type="submit" value="Add to Cart" class="btn btn-primary form-control" style="height:50px;">Add to Cart</button>
+                    <button type="submit" value="Add to Cart" class="btn btn-primary form-control fw-bold" style="height:50px;">Add to Cart</button>
                 </div>
             </div>
         </div>

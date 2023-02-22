@@ -37,6 +37,14 @@ builder.Services.AddSingleton<IEmailSender, EmailSender>();
 // Register IUnitOfWork to the container
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+// Change Default Login Paths to Identity Paths
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

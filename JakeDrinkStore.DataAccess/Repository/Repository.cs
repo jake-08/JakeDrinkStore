@@ -16,6 +16,8 @@ namespace JakeDrinkStore.DataAccess.Repository
         {
             _db = db;
             this.dbSet = _db.Set<T>();
+            // This code is to check Navigation Property name
+            //_db.ShoppingCarts.Include(sc => sc.Product).Include(sc => sc.ProductTag);
         }
 
         // includeProperites - "Category,CoverType"

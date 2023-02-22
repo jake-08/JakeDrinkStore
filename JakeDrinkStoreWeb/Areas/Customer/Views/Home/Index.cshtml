@@ -15,8 +15,8 @@
                         </div>
                             <div class="card-body">
                                 <p style="height:57px" class="card-title h5 text-primary">@product.Name</p>
-                                <p class="card-title text-info">by <b>@product.Brand</b></p>
-                                <p>List Price: <b>$@product.ListPrice.ToString("0.00")</b> each</p>
+                                <p class="text-warning">by <b>@product.Brand</b></p>
+                                <p>Price: <b>$@product.ListPrice.ToString("0.00")</b> each</p>
                                 <p>Bulk Price: <b>$@product.BulkCasePrice.ToString("0.00")</b> / case</p>
                         <a class="btn btn-primary form-control" asp-area="Customer" asp-controller="Home" asp-action="Details" asp-route-productId="@product.Id">Details</a>
                             </div>

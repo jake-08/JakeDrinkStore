@@ -12,6 +12,7 @@ namespace JakeDrinkStore.DataAccess.Repository
         public ProductTagRepository ProductTag { get; private set; }
         public ICompanyRepository Company { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }
+        public IShoppingCartRepository ShoppingCart { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         { 
@@ -22,6 +23,7 @@ namespace JakeDrinkStore.DataAccess.Repository
             ProductTag = new ProductTagRepository(_db);
             Company = new CompanyRepository(_db);
             ApplicationUser = new ApplicationUserRepository(_db);
+            ShoppingCart = new ShoppingCartRepository(_db);
         }
         public void Save()
         {

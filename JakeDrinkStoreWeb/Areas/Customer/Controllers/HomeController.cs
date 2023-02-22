@@ -1,7 +1,9 @@
 ﻿using JakeDrinkStore.DataAccess.Repository.IRepository;
 using JakeDrinkStore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 {
@@ -26,9 +28,11 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 
         public IActionResult Details(int productId)
         {
-            IEnumerable<ProductTag> productTagList = _unitOfWork.ProductTag.GetAll(pt => pt.ProductId == productId, includeProperties:"Tag");
+            IEnumerable<ProductTag> productTagList = _unitOfWork.ProductTag.GetAll(pt => pt.ProductId == productId, includeProperties: "Tag");
+            // Can implement the logic where the product is already added to the shopping cart, show the count and caseCount properties 
             ShoppingCart cartObj = new()
             {
+                ProductId = productId,
                 Product = _unitOfWork.Product.GetFirstOrDefault(p => p.Id == productId, includeProperties: "DrinkType,ProductTags"),
                 ProductTag = productTagList,
                 Count = 0,
@@ -36,6 +40,33 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
             };
 
             return View(cartObj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize] // only login users can add to the shopping Cart
+        public IActionResult Details(ShoppingCart shoppingCart)
+        {
+            // Get the login user id
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            shoppingCart.ApplicationUserId = claim.Value;
+
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.GetFirstOrDefault(sc => sc.ApplicationUserId == claim.Value && sc.ProductId == shoppingCart.ProductId);
+
+            if (cartFromDb == null)
+            {
+                _unitOfWork.ShoppingCart.Add(shoppingCart);
+            }
+            else
+            {
+                _unitOfWork.ShoppingCart.IncrementCount(cartFromDb, shoppingCart.Count);
+                _unitOfWork.ShoppingCart.IncrementCaseCount(cartFromDb, shoppingCart.CaseCount);
+            }
+            _unitOfWork.Save();
+
+            return RedirectToAction("Index");
+            // return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Privacy()

@@ -24,5 +24,14 @@ namespace JakeDrinkStore.Models
 
         public int CaseCount { get; set; }
 
+        //public double IndividualPrice { get; set; }
+
+        //public double CasePrice { get; set; }
+
+        public string ApplicationUserId { get; set; }
+
+        [ForeignKey("ApplicationUserId")]
+        public ApplicationUser ApplicationUser { get; set; }
+
     }
 }
