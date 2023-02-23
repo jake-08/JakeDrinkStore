@@ -27,11 +27,12 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 			ShoppingCartVM = new ShoppingCartVM()
 			{
 				ListCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value, includeProperties: "Product"),
+				OrderHeader = new()
 			};
 
 			foreach (var cart in ShoppingCartVM.ListCart)
 			{
-				ShoppingCartVM.CartTotal += (GetIndividualPrice(cart.Count, cart.Product.ListPrice) * cart.Count) + 
+				ShoppingCartVM.OrderHeader.OrderTotal += (GetIndividualPrice(cart.Count, cart.Product.ListPrice) * cart.Count) + 
 											(GetCasePrice(cart.CaseCount, cart.Product.MinBulkCase, cart.Product.CasePrize, cart.Product.BulkCasePrice) * cart.CaseCount);
 			}
 
@@ -143,22 +144,33 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 		public IActionResult Summary()
 		{
 			// Get the login user id
-			//	var claimsIdentity = (ClaimsIdentity)User.Identity;
-			//	var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+			var claimsIdentity = (ClaimsIdentity)User.Identity;
+			var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-			//	ShoppingCartVM = new ShoppingCartVM()
-			//	{
-			//		ListCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value, includeProperties: "Product"),
-			//	};
+			ShoppingCartVM = new ShoppingCartVM()
+			{
+				ListCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value, includeProperties: "Product"),
+				OrderHeader = new()
+			};
 
-			//	foreach (var cart in ShoppingCartVM.ListCart)
-			//	{
-			//		ShoppingCartVM.CartTotal += (GetIndividualPrice(cart.Count, cart.Product.ListPrice) * cart.Count) +
-			//									(GetCasePrice(cart.CaseCount, cart.Product.MinBulkCase, cart.Product.CasePrize, cart.Product.BulkCasePrice) * cart.CaseCount);
-			//	}
+			// Add personal details from Application User to Order Header
+			ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claim.Value);
+			ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
+			ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber ?? "";
+			ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM.OrderHeader.ApplicationUser.StreetAddress ?? "";
+			ShoppingCartVM.OrderHeader.Suburb = ShoppingCartVM.OrderHeader.ApplicationUser.Suburb ?? "";
+			ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State ?? "";
+			ShoppingCartVM.OrderHeader.Postcode = ShoppingCartVM.OrderHeader.ApplicationUser.Postcode ?? "";
 
-			//	return View(ShoppingCartVM);
-			return View();
+			foreach (var cart in ShoppingCartVM.ListCart)
+			{
+				ShoppingCartVM.OrderHeader.OrderTotal += (GetIndividualPrice(cart.Count, cart.Product.ListPrice) * cart.Count) +
+											(GetCasePrice(cart.CaseCount, cart.Product.MinBulkCase, cart.Product.CasePrize, cart.Product.BulkCasePrice) * cart.CaseCount);
+				cart.IndividualPrice = GetIndividualPrice(cart.Count, cart.Product.ListPrice);
+				cart.CasePrice = GetCasePrice(cart.CaseCount, cart.Product.MinBulkCase, cart.Product.CasePrize, cart.Product.BulkCasePrice);
+			}
+
+			return View(ShoppingCartVM);
 		}
 		#endregion Summary Page
 
