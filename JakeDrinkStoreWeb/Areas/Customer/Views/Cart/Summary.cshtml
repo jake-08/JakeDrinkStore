@@ -1,16 +1,21 @@
 ﻿@model JakeDrinkStore.Models.ViewModels.ShoppingCartVM
+
+@*Inject Stripe Settings to the view using IOptions*@
+@using Microsoft.Extensions.Options 
+@inject IOptions<JakeDrinkStore.Utility.StripeSettings> Stripe
+
 <form method="post">
 	<br />
 	<div class="container">
 		<div class="card">
-			<div class="card-header bg-dark text-light ml-0">
+			<div class="card-header bg-secondary text-dark ml-0">
 				<div class=" row container">
-					<div class="col-6">
+					<div class="d-flex align-items-center col-6">
 						<i class="bi bi-newspaper"></i> &nbsp;
 						Order Summary
 					</div>
 					<div class="col-6 text-end">
-						<a asp-action="Index" class="btn btn-outline-info btn-sm">Back to Cart</a>
+						<a asp-action="Index" class="btn btn-outline-primary btn-sm">Back to Cart</a>
 					</div>
 				</div>
 			</div>
@@ -25,56 +30,56 @@
 							</div>
 							<div class="row my-1">
 								<div class="col-3">
-									<label>Name</label>
+									<label>Name:</label>
 								</div>
 								<div class="col-9">
-									<input asp-for="OrderHeader.ApplicationUser.Name" class="form-control" />
-									<span asp-validation-for="OrderHeader.ApplicationUser.Name" class="text-danger"></span>
+									<input asp-for="OrderHeader.Name" class="form-control" />
+									<span asp-validation-for="OrderHeader.Name" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">
 								<div class="col-3">
-									<label>Phone</label>
+									<label>Phone:</label>
 								</div>
 								<div class="col-9">
-									<input asp-for="OrderHeader.ApplicationUser.PhoneNumber" class="form-control" />
-									<span asp-validation-for="OrderHeader.ApplicationUser.PhoneNumber" class="text-danger"></span>
+									<input asp-for="OrderHeader.PhoneNumber" class="form-control" />
+									<span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">
 								<div class="col-3">
-									<label>Street Address</label>
+									<label>Street Address:</label>
 								</div>
 								<div class="col-9">
-									<input asp-for="OrderHeader.ApplicationUser.StreetAddress" class="form-control" />
-									<span asp-validation-for="OrderHeader.ApplicationUser.StreetAddress" class="text-danger"></span>
+									<input asp-for="OrderHeader.StreetAddress" class="form-control" />
+									<span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">
 								<div class="col-3">
-									<label>City</label>
+									<label>Suburb:</label>
 								</div>
 								<div class="col-9">
-									<input asp-for="OrderHeader.ApplicationUser.Suburb" class="form-control" />
-									<span asp-validation-for="OrderHeader.ApplicationUser.Suburb" class="text-danger"></span>
+									<input asp-for="OrderHeader.Suburb" class="form-control" />
+									<span asp-validation-for="OrderHeader.Suburb" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">
 								<div class="col-3">
-									<label>State</label>
+									<label>State:</label>
 								</div>
 								<div class="col-9">
-									<input asp-for="OrderHeader.ApplicationUser.State" class="form-control" />
-									<span asp-validation-for="OrderHeader.ApplicationUser.State" class="text-danger"></span>
+									<input asp-for="OrderHeader.State" class="form-control" />
+									<span asp-validation-for="OrderHeader.State" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">
 								<div class="col-3">
-									<label>Postal Code</label>
+									<label>Postcode:</label>
 								</div>
 								<div class="col-9">
-									<input asp-for="OrderHeader.ApplicationUser.Postcode" class="form-control" />
-									<span asp-validation-for="OrderHeader.ApplicationUser.Postcode" class="text-danger"></span>
+									<input asp-for="OrderHeader.Postcode" class="form-control" />
+									<span asp-validation-for="OrderHeader.Postcode" class="text-danger"></span>
 								</div>
 							</div>
 						</div>
@@ -118,11 +123,10 @@
 											</li>
 										}
 									}
-
 								}
 								<li class="list-group-item d-flex justify-content-between bg-light">
-									<strong class="text-info">Total (AUD)</strong>
-									<strong class="text-info">@Model.OrderHeader.OrderTotal.ToString("c")</strong>
+									<strong class="text-info fw-bold">Total (AUD)</strong>
+									<strong class="text-info fw-bold">@Model.OrderHeader.OrderTotal.ToString("c")</strong>
 								</li>
 							</ul>
 						</div>
@@ -138,7 +142,7 @@
 						</p>
 					</div>
 					<div class="col-12 col-md-4">
-						<button type="submit" value="Place Order" class="btn btn-primary form-control">Place Order</button>
+						<button type="submit" value="Place Order" class="btn btn-success form-control">Place Order</button>
 					</div>
 				</div>
 			</div>

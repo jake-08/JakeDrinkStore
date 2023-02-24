@@ -28,5 +28,13 @@ namespace JakeDrinkStore.DataAccess.Repository
                 }
             }
 		}
+
+		public void UpdateStripePaymentId(int id, string sessionId, string? paymentIntentId)
+		{
+			var orderFromDb = _db.OrderHeaders.FirstOrDefault(od => od.Id == id);
+			
+            orderFromDb.SessionId = sessionId;
+            orderFromDb.PaymentIntentId = paymentIntentId;
+		}
 	}
 }
