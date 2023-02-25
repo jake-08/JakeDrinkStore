@@ -1,5 +1,6 @@
 ﻿using JakeDrinkStore.DataAccess.Repository.IRepository;
 using JakeDrinkStore.Models;
+using JakeDrinkStore.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -35,7 +36,7 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
                 ProductId = productId,
                 Product = _unitOfWork.Product.GetFirstOrDefault(p => p.Id == productId, includeProperties: "DrinkType,ProductTags"),
                 ProductTag = productTagList,
-                Count = 0,
+                Count = 1,
                 CaseCount = 0,
             };
 
@@ -44,7 +45,7 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize] // only login users can add to the shopping Cart
+        [Authorize]  // only login users can add to the shopping Cart
         public IActionResult Details(ShoppingCart shoppingCart)
         {
             // Get the login user id
@@ -66,7 +67,6 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
             _unitOfWork.Save();
 
             return RedirectToAction("Index");
-            // return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Privacy()

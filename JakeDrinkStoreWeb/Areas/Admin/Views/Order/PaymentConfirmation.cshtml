@@ -1,20 +1,20 @@
 ﻿@model int
 @{
-    ViewData["Title"] = "Confirmation";
+    ViewData["Title"] = "Payment Confirmation";
 }
 
 <div class="container row pt-4">
     <div class="col-12 text-center">
-        <h1 class="text-primary text-center">Order Placed Successfully!</h1>
+        <h1 class="text-primary text-center">Payment Successful!</h1>
         Your Order Number is : @Model <br /><br />
         <img src="~/images/lawn_leaf.jpg" width="65%" />
     </div>
     <div class="col-12 text-center" style="color:maroon">
         <br />
-        Your order has been placed successfully! 
+        Your order has been successfully paid! 
     </div>
     <div class="col-12 text-center" >
         <br />
-        Let's go back to <a asp-action="Index" asp-controller="Home">Shop More</a>
+        <a class="btn btn-primary" asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-orderHeaderId="@Model">Back to Order Details</a>
     </div>
 </div>

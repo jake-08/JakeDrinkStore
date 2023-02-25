@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - JakeDrinkStore</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/bootswatchTheme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
@@ -28,8 +28,11 @@
                         <li class="nav-item">
                             <a class="nav-link @(path == "/" ? "active" : "")" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(path.Contains("Order") ? "active" : "")" asp-area="Admin" asp-controller="Order" asp-action="Index">Orders</a>
+                        </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle @(path.StartsWith("/Admin") ? "active" : "")" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                            <a class="nav-link dropdown-toggle @(!path.Contains("Order") && path.StartsWith("/Admin") ? "active" : "")" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
                             <div class="dropdown-menu">
                                 <a class="nav-link @(path.Contains("Product") ? "active" : "")" asp-area="Admin" asp-controller="Product" asp-action="Index">Drinks</a>
                                 <div class="dropdown-divider"></div>
@@ -41,7 +44,7 @@
                             </div>
                         </li>
                         <li class="nav-item px-2">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                            <a class="nav-link @(path.Contains("Cart") ? "active" : "")" asp-area="Customer" asp-controller="Cart" asp-action="Index">
                                 <i class="bi bi-cart"></i>
                             </a>
                         </li>

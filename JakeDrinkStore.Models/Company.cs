@@ -18,6 +18,7 @@ namespace JakeDrinkStore.Models
 
         public string? Name { get; set; }
 
+        [DisplayName("Street Address")]
         public string? StreetAddress { get; set; }
 
         public string? Suburb { get; set; }
@@ -26,6 +27,7 @@ namespace JakeDrinkStore.Models
 
         public string? Postcode { get; set; }
 
+        [DisplayName("Phone Number")]
         public string? PhoneNumber { get; set; }
     }
 }

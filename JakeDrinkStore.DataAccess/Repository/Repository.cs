@@ -47,6 +47,15 @@ namespace JakeDrinkStore.DataAccess.Repository
         {
             IQueryable<T> query = dbSet;
 
+            if (tracked)
+            {
+                query = dbSet;
+            }
+            else
+            {
+                query = query.AsNoTracking();
+            }
+
             query = query.Where(filter);
 
             if (includeProperties != null)

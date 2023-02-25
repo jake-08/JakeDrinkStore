@@ -12,9 +12,24 @@ function loadDataTable() {
         "columns": [
             { "data": "name", "className": "align-middle" }, // the data value should match the API Json key
             { "data": "brand", "className": "align-middle" },
-            { "data": "listPrice", "className": "align-middle" },
-            { "data": "casePrize", "className": "align-middle" },
-            { "data": "bulkCasePrice", "className": "align-middle" },
+            {
+                "data": "listPrice", "className": "align-middle",
+                render: function (listPrice) {
+                    return '$ ' + listPrice.toFixed(2)
+                }
+            },
+            {
+                "data": "casePrize", "className": "align-middle",
+                render: function (casePrize) {
+                    return '$ ' + casePrize.toFixed(2)
+                }
+            },
+            {
+                "data": "bulkCasePrice", "className": "align-middle",
+                render: function (bulkCasePrice) {
+                    return '$ ' + bulkCasePrice.toFixed(2)
+                }
+            },
             { "data": "drinkType.name", "className": "align-middle" },
             {
                 "data": "id",

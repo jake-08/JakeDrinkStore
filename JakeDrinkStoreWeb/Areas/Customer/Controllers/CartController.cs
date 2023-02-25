@@ -186,6 +186,7 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 			var claimsIdentity = (ClaimsIdentity)User.Identity;
 			var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
+			// Save the Shopping Cart to the Order Header Table 
 			ShoppingCartVM.ListCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value, includeProperties: "Product");
 
 			ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
@@ -204,8 +205,24 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 			_unitOfWork.OrderHeader.Add(ShoppingCartVM.OrderHeader);
 			_unitOfWork.Save();
 
-			// Add Order Details for each item
-			foreach (var cart in ShoppingCartVM.ListCart)
+			// Company User Logic
+            ApplicationUser applicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claim.Value);
+			// If it is not a Company User
+            if (applicationUser.CompanyId.GetValueOrDefault() == 0)
+            {
+                ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
+                ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
+            }
+			// If it is a Company User
+            else
+            {
+                ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusDelayedPayment;
+                ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusApproved;
+				ShoppingCartVM.OrderHeader.PaymentDueDate = DateTime.Now.AddDays(30);
+            }
+
+            // Add each shopping cart items to the Order Details Table
+            foreach (var cart in ShoppingCartVM.ListCart)
 			{
 				OrderDetails orderDetail = new()
 				{
@@ -224,72 +241,83 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 			_unitOfWork.ShoppingCart.RemoveRange(ShoppingCartVM.ListCart);
 			_unitOfWork.Save();
 
-			// Stripe Settings
-			var domain = "https://localhost:44367/";
-			var options = new SessionCreateOptions
+			// Go to Stripe payment if it is not Company User, Compnay Users have 30 days delayed payment  
+			if (applicationUser.CompanyId.GetValueOrDefault() == 0)
 			{
-				LineItems = new List<SessionLineItemOptions>(),
-				Mode = "payment",
-				SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
-				CancelUrl = domain + $"customer/cart/index",
-			};
+				// Stripe Settings
+				var domain = "https://localhost:44367/";
+				var options = new SessionCreateOptions
+				{
+					LineItems = new List<SessionLineItemOptions>(),
+					Mode = "payment",
+					SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
+					CancelUrl = domain + $"customer/cart/index",
+				};
 
-			foreach (var item in ShoppingCartVM.ListCart)
-			{
-				if (item.Count > 0)
+				// Add items to SessionLineItemOptions List for Stripe 
+				foreach (var item in ShoppingCartVM.ListCart)
 				{
-					var sessionLineItemIndividual = new SessionLineItemOptions
+					if (item.Count > 0)
 					{
-						PriceData = new SessionLineItemPriceDataOptions
+						var sessionLineItemIndividual = new SessionLineItemOptions
 						{
-							UnitAmount = (long)(item.IndividualPrice * 100), // 20.00 -> 2000
-							Currency = "aud",
-							ProductData = new SessionLineItemPriceDataProductDataOptions
+							PriceData = new SessionLineItemPriceDataOptions
 							{
-								Name = item.Product.Name
+								UnitAmount = (long)(item.IndividualPrice * 100), // 20.00 -> 2000
+								Currency = "aud",
+								ProductData = new SessionLineItemPriceDataProductDataOptions
+								{
+									Name = item.Product.Name
+								},
 							},
-						},
-						Quantity = item.Count,
-					};
-					options.LineItems.Add(sessionLineItemIndividual);
-				}
-				if (item.CaseCount > 0)
-				{
-					var sessionLineItemCase = new SessionLineItemOptions
+							Quantity = item.Count,
+						};
+						options.LineItems.Add(sessionLineItemIndividual);
+					}
+					if (item.CaseCount > 0)
 					{
-						PriceData = new SessionLineItemPriceDataOptions
+						var sessionLineItemCase = new SessionLineItemOptions
 						{
-							UnitAmount = (long)(item.CasePrice * 100), // 20.00 -> 2000
-							Currency = "aud",
-							ProductData = new SessionLineItemPriceDataProductDataOptions
+							PriceData = new SessionLineItemPriceDataOptions
 							{
-								Name = item.Product.Name
+								UnitAmount = (long)(item.CasePrice * 100), // 20.00 -> 2000
+								Currency = "aud",
+								ProductData = new SessionLineItemPriceDataProductDataOptions
+								{
+									Name = item.Product.Name
+								},
 							},
-						},
-						Quantity = item.CaseCount,
-					};
-					options.LineItems.Add(sessionLineItemCase);
+							Quantity = item.CaseCount,
+						};
+						options.LineItems.Add(sessionLineItemCase);
+					}
 				}
+
+				// Create the Stripe Session
+				var service = new SessionService();
+				Session session = service.Create(options);
+
+				// Save the SessionId to the OrderHeader
+				ShoppingCartVM.OrderHeader.SessionId = session.Id;
+				_unitOfWork.OrderHeader.UpdateStripePaymentId(ShoppingCartVM.OrderHeader.Id, session.Id, null);
+				_unitOfWork.Save();
+
+				// Go to Stripe Payment Page
+				Response.Headers.Add("Location", session.Url);
+				return new StatusCodeResult(303);
 			}
-
-			// Create the Stripe Session
-			var service = new SessionService();
-			Session session = service.Create(options);
-
-			// Save the SessionId to the OrderHeader
-			ShoppingCartVM.OrderHeader.SessionId = session.Id;
-			_unitOfWork.OrderHeader.UpdateStripePaymentId(ShoppingCartVM.OrderHeader.Id, session.Id, null);
-			_unitOfWork.Save();
-
-			// Go to Stripe Payment Page
-			Response.Headers.Add("Location", session.Url);
-			return new StatusCodeResult(303);
+			// Go to Order Confirmation Page if it is Company User
+			else
+			{
+                return RedirectToAction("OrderConfirmation", "Cart", new { id = ShoppingCartVM.OrderHeader.Id });
+            }
 		}
 
 		public IActionResult OrderConfirmation(int id)
 		{
 			OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == id, includeProperties: "ApplicationUser");
 
+			// Check if it not a company user to prevent updating the OrderHeader Payment Status to Approved 
 			if (orderHeader.PaymentStatus != SD.PaymentStatusDelayedPayment)
 			{
 				var service = new SessionService();
@@ -298,13 +326,15 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 				// Check Stripe Payment Success or not 
 				if (session.PaymentStatus.ToLower() == "paid")
 				{
-					// Update the PaymentIntentid and Order Status
+					// Update the PaymentIntentId
 					_unitOfWork.OrderHeader.UpdateStripePaymentId(id, orderHeader.SessionId, session.PaymentIntentId);
+					// Update Order Status
 					_unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
 					_unitOfWork.Save();
 				}
 			}
 
+			// Remove the items in the Shopping Carts 
 			List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
 			_unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
 			_unitOfWork.Save();

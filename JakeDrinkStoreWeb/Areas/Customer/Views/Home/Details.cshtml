@@ -1,4 +1,9 @@
-﻿@model ShoppingCart
+﻿@using JakeDrinkStore.Utility;
+@model ShoppingCart
+
+@{
+    ViewData["Title"] = "Details";
+}
 
 <form method="post">
     <input hidden asp-for="ProductId" />
@@ -10,7 +15,7 @@
             </div>
             <div class="col-12 col-md-6 text-end pt-4">
                 <span class="badge bg-info pt-2 fw-bold" style="height:30px;">@Model.Product.DrinkType.Name</span>
-                @foreach (var tag in Model.Product.ProductTags)
+                @foreach (var tag in Model.ProductTag)
                 {
                     <span class="badge bg-warning fw-bold pt-2" style="height:30px;">@tag.Tag.Name</span>
                 }
@@ -20,7 +25,6 @@
             <div class="container rounded p-2">
                 <div class="row">
                     <div class="col-8 col-lg-8">
-
                         <div class="row">
                             <h5 class="text-dark pb-2">@Html.Raw(Model.Product.Description)</h5>
                         </div>
@@ -28,13 +32,13 @@
                             <div class="p-1 col-3 bg-primary text-white border-bottom">
                                 <div></div>
                             </div>
-                            <div class="p-1 col-3 bg-primary  text-white fw-bold border-bottom">
+                            <div class="p-1 col-3 bg-primary text-white fw-bold border-bottom">
                                 <div>Individual</div>
                             </div>
-                            <div class="p-1 col-3 bg-primary  text-white fw-bold border-bottom">
+                            <div class="p-1 col-3 bg-primary text-white fw-bold border-bottom">
                                 <div>Case Price</div>
                             </div>
-                            <div class="p-1 col-3 bg-primary  text-white fw-bold border-bottom">
+                            <div class="p-1 col-3 bg-primary text-white fw-bold border-bottom">
                                 <div>Bulk Price</div>
                             </div>
                         </div>
@@ -67,11 +71,11 @@
                             </div>
                         </div>
                         <div class="row pt-4">
-                            <div class="col-4 text-primary d-flex align-items-center"><h5 class="mb-0">Individual<i data-toggle="tooltip" data-placement="top" title="Price will be calcuated using individual price only">&#x1F6C8;</i></h5></div>
+                            <div class="col-4 text-primary d-flex align-items-center"><h5 class="mb-0">Individual <i data-toggle="tooltip" data-placement="top" title="Price will be calcuated using individual price only"><i class="bi bi-info-circle"></i></i></h5></div>
                             <div class="col-2"><input asp-for="Count" class="form-control"/></div>
                         </div>
                         <div class="row pt-4">
-                            <div class="col-4 text-primary d-flex align-items-center"><h5 class="mb-0">Number of Cases<i data-toggle="tooltip" data-placement="top" title="Price will be calcuated with bulk price if more than bulk quantity">&#x1F6C8;</i></h5></div>
+                            <div class="col-4 text-primary d-flex align-items-center"><h5 class="mb-0">Number of Cases <i data-toggle="tooltip" data-placement="top" title="Price will be calcuated with bulk price if more than bulk quantity"><i class="bi bi-info-circle"></i></i></h5></div>
                             <div class="col-2"><input asp-for="CaseCount" class="form-control"/></div>
                         </div>
                     </div>
@@ -86,9 +90,18 @@
                 <div class="col-12 col-md-6 pb-1">
                     <button class="btn btn-success form-control fw-bold" style="height:50px;" asp-action="Index">Back to Home</button>
                 </div>
-                <div class="col-12 col-md-6 pb-1">
-                    <button type="submit" value="Add to Cart" class="btn btn-primary form-control fw-bold" style="height:50px;">Add to Cart</button>
-                </div>
+                @if (User.IsInRole(SD.Role_Admin))
+                {
+                    <div class="col-12 col-md-6 pb-1">
+                        <button type="submit" value="Add to Cart" class="btn btn-primary form-control fw-bold disabled" style="height:50px;">Add to Cart</button>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-12 col-md-6 pb-1">
+                        <button type="submit" value="Add to Cart" class="btn btn-primary form-control fw-bold" style="height:50px;">Add to Cart</button>
+                    </div>
+                }
             </div>
         </div>
     </div>

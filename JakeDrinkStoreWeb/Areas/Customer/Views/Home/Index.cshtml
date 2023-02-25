@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Product>
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
 <div class="row pb-3">
@@ -18,7 +18,7 @@
                                 <p class="text-warning">by <b>@product.Brand</b></p>
                                 <p>Price: <b>$@product.ListPrice.ToString("0.00")</b> each</p>
                                 <p>Bulk Price: <b>$@product.BulkCasePrice.ToString("0.00")</b> / case</p>
-                        <a class="btn btn-primary form-control" asp-area="Customer" asp-controller="Home" asp-action="Details" asp-route-productId="@product.Id">Details</a>
+                                <a class="btn btn-primary form-control" asp-area="Customer" asp-controller="Home" asp-action="Details" asp-route-productId="@product.Id">Details</a>
                             </div>
                     </div>
                 </div>

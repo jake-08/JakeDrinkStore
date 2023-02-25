@@ -24,7 +24,7 @@ namespace JakeDrinkStore.Models
 
 		public DateTime ShippingDate { get; set; }
 
-		public double OrderTotal { get; set; }
+        public double OrderTotal { get; set; }
 
 		public string? OrderStatus { get; set; }
 

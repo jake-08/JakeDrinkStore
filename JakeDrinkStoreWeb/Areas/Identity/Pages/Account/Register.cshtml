@@ -51,6 +51,7 @@
             <div class="form-floating pb-2 p-0 col-6">
                 <input asp-for="Input.ConfirmPassword" class="form-control" aria-required="true" />
                 <label asp-for="Input.ConfirmPassword"></label>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
 
             <div class="form-floating pb-2 ps-0 col-6">

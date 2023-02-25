@@ -87,6 +87,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
         // POST 
         /// <summary>
         /// Create and Update Product
+        /// Can impletment Default Image functionality, by giving choose Default Image Button in UI 
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]

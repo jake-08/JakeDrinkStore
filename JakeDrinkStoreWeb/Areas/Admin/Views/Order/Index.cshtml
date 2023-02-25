@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Order";
+    var status = Context.Request.Query["status"];
+    var pending = "text-warning";
+    var inprocess = "text-secondary";
+    var approved = "text-primary";
+    var completed = "text-success";
+    var all = "text-primary";
+
+    switch (status)
+    {
+        case "pending":
+            pending = "active text-white";
+            break;
+        case "inprocess":
+            inprocess = "active text-white";
+            break;
+        case "approved":
+            approved = "active text-white";
+            break;
+        case "completed":
+            completed = "active text-white";
+            break;
+        default:
+            all = "active text-white";
+            break;
+    }
+}
+
+<div class="p-3">
+    <div class="d-flex justify-content-between pt-4">
+        <div class="p-2">
+            <h2 class="text-primary">Order List</h2>
+        </div>
+        <div class="p-2">
+            <ul class="list-group list-group-horizontal-sm">
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="inprocess">
+                <li class="list-group-item fw-normal @inprocess">In Process</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="pending">
+                <li class="list-group-item fw-normal @pending">Payment Pending</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="approved">
+                <li class="list-group-item fw-normal @approved">Order Approved</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="completed">
+                <li class="list-group-item fw-normal @completed">Completed</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="all">
+                <li class="list-group-item fw-normal @all">All</li>
+                </a>
+            </ul>
+        </div>
+    </div>
+    </br>
+
+    <table id="tblData" class="table table-bordered table-striped" style="width:100%; padding-top:20px">
+        <thead>
+            <tr>
+                <th width="5%">Id</th>
+                <th width="15%">Name</th>
+                <th width="15%">Phone Number</th>
+                <th width="20%">Email</th>
+                <th width="15%">Order Status</th>
+                <th width="15%">Payment Status</th>
+                <th width="10%">Total</th>
+                <th width="5%">Edit</th>
+                <th width="5%">Delete</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/order.js"></script>
+}
