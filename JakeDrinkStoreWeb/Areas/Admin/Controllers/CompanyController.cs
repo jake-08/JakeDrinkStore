@@ -1,14 +1,13 @@
 ﻿using JakeDrinkStore.DataAccess.Repository.IRepository;
 using JakeDrinkStore.Models;
-using JakeDrinkStore.Models.ViewModels;
+using JakeDrinkStore.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Hosting;
-using System.ComponentModel;
 
 namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CompanyController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

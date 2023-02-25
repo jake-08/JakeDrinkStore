@@ -31,23 +31,29 @@
                         <li class="nav-item">
                             <a class="nav-link @(path.Contains("Order") ? "active" : "")" asp-area="Admin" asp-controller="Order" asp-action="Index">Orders</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle @(!path.Contains("Order") && path.StartsWith("/Admin") ? "active" : "")" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
-                            <div class="dropdown-menu">
-                                <a class="nav-link @(path.Contains("Product") ? "active" : "")" asp-area="Admin" asp-controller="Product" asp-action="Index">Drinks</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="nav-link @(path.Contains("DrinkType") ? "active" : "")" asp-area="Admin" asp-controller="DrinkType" asp-action="Index">Drink Types</a>
-                                <a class="nav-link @(path.Contains("Tag") ? "active" : "")" asp-area="Admin" asp-controller="Tag" asp-action="Index">Tags</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="nav-link @(path.Contains("Company") ? "active" : "")" asp-area="Admin" asp-controller="Company" asp-action="Index">Companies</a>
-                                <a class="nav-link @(path.Contains("User") ? "active" : "")" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">Users</a>
-                            </div>
-                        </li>
-                        <li class="nav-item px-2">
-                            <a class="nav-link @(path.Contains("Cart") ? "active" : "")" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                <i class="bi bi-cart"></i>
-                            </a>
-                        </li>
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle @(!path.Contains("Order") && path.StartsWith("/Admin") ? "active" : "")" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                                <div class="dropdown-menu">
+                                    <a class="nav-link @(path.Contains("Product") ? "active" : "")" asp-area="Admin" asp-controller="Product" asp-action="Index">Drinks</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="nav-link @(path.Contains("DrinkType") ? "active" : "")" asp-area="Admin" asp-controller="DrinkType" asp-action="Index">Drink Types</a>
+                                    <a class="nav-link @(path.Contains("Tag") ? "active" : "")" asp-area="Admin" asp-controller="Tag" asp-action="Index">Tags</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="nav-link @(path.Contains("Company") ? "active" : "")" asp-area="Admin" asp-controller="Company" asp-action="Index">Companies</a>
+                                    <a class="nav-link @(path.Contains("User") ? "active" : "")" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">Users</a>
+                                </div>
+                            </li>
+                        }
+                        @if (!User.IsInRole(SD.Role_Admin))
+                        {
+                            <li class="nav-item px-2">
+                                <a class="nav-link @(path.Contains("Cart") ? "active" : "")" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                    <i class="bi bi-cart"></i>
+                                </a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
