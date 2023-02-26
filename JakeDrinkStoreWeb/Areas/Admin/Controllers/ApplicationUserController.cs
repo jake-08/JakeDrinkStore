@@ -3,8 +3,10 @@ using JakeDrinkStore.Models;
 using JakeDrinkStore.Models.ViewModels;
 using JakeDrinkStore.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System.ComponentModel;
 
@@ -15,10 +17,12 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
 	public class ApplicationUserController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ApplicationUserController(IUnitOfWork unitOfWork)
+        public ApplicationUserController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         { 
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         // GET
@@ -41,6 +45,8 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
         public IActionResult Edit(string? id)
         {
             ApplicationUser user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == id);
+
+            var roles = _userManager.GetRolesAsync(user).GetAwaiter().GetResult();
 
             ApplicationUserVM userVM = new()
             {
@@ -81,6 +87,8 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
                 {
                     ApplicationUser dbUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == user.Id);
 
+                    _userManager.GetRolesAsync(dbUser).GetAwaiter().GetResult();
+
                     dbUser.Name = user.Name;
                     dbUser.StreetAddress = user.StreetAddress;
                     dbUser.Suburb = user.Suburb;
@@ -102,7 +110,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var userList = _unitOfWork.ApplicationUser.GetAll().OrderByDescending(user => user.Id);
+            var userList = _unitOfWork.ApplicationUser.GetAll();
             return Json(new { data = userList });
         }
 
@@ -114,12 +122,22 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
             if (user == null)
             {
                 return Json(new { success = false, message = "Cannot be deleted - User doesn't exist" });
-            } 
+            }
 
-            _unitOfWork.ApplicationUser.Remove(user);
-            _unitOfWork.Save();
+            // Get the Role of delete User
+            IList<string> userRoles = _userManager.GetRolesAsync(user).GetAwaiter().GetResult();
 
-            return Json(new { success = true, message = "Successfully Deleted" });
+            // If Role is Admin, return Cannot be deleted error
+            if (userRoles.Contains("Admin"))
+            {
+                return Json(new { success = false, message = "Not Allowed - Admin User Cannot be deleted" });
+            }
+            else
+            {
+                _unitOfWork.ApplicationUser.Remove(user);
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "User Successfully Deleted" });
+            }
         }
         #endregion API CALLS
     }
