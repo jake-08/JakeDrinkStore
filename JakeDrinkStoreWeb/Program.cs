@@ -58,6 +58,13 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+// Add Facebook Login
+builder.Services.AddAuthentication().AddFacebook(options =>
+{
+    options.AppId = builder.Configuration.GetSection("Facebook:AppId").Get<string>();
+    options.AppSecret = builder.Configuration.GetSection("Facebook:AppSecret").Get<string>();
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
