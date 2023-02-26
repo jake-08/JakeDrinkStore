@@ -77,7 +77,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var companyList = _unitOfWork.Company.GetAll();
+            var companyList = _unitOfWork.Company.GetAll().OrderByDescending(company => company.Id);
             return Json(new { data = companyList });
         }
 

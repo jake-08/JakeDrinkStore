@@ -1,5 +1,8 @@
 ﻿@using JakeDrinkStore.Models.ViewModels;
 @model ProductVM
+@{
+    ViewData["Title"] = (Model.Product.Id != 0 ? "Update" : "Create") + " Drink";
+}
 
 @*enctype for file upload*@
 <form method="post" asp-action="Upsert" enctype="multipart/form-data">

@@ -175,7 +175,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var productList = _unitOfWork.Product.GetAll(includeProperties: "DrinkType,ProductTags");
+            var productList = _unitOfWork.Product.GetAll(includeProperties: "DrinkType,ProductTags").OrderByDescending(product => product.Id);
             return Json(new { data = productList });
         }
 

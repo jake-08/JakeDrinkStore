@@ -20,7 +20,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
         // GET
         public IActionResult Index()
         {
-            IEnumerable<Tag> objCategoryList = _unitOfWork.Tag.GetAll();
+            IEnumerable<Tag> objCategoryList = _unitOfWork.Tag.GetAll().OrderByDescending(tag => tag.CreatedDateTime); ;
             return View(objCategoryList);
         }
 

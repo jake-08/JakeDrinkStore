@@ -21,18 +21,24 @@ function loadDataTable() {
                 "data": "id",
                 "render": function (data) {
                     return `
-                        <div class="w-75 btn-group" role="group">
-                            <a class="btn btn-primary mx-2" href="/Admin/ApplicationUser/Edit?id=${data}">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <a class="btn btn-danger mx-2" onClick="Delete('/Admin/ApplicationUser/Delete/${data}')">
-                                <i class="bi bi-trash3"></i>
-                            </a>
-                        </div>
+                        <a class="btn btn-primary mx-2" href="/Admin/ApplicationUser/Edit?id=${data}">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                     `
+                }
+            },
+            {
+                "data": "id",
+                "render": function (data) {
+                    return `
+                        <a class="btn btn-danger mx-2" onClick="Delete('/Admin/ApplicationUser/Delete/${data}')">
+                            <i class="bi bi-trash3"></i>
+                        </a>
                      `
                 }
             },
         ],
+        order: []
     });
 }
 

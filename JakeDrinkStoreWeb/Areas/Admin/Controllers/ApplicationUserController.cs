@@ -102,7 +102,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var userList = _unitOfWork.ApplicationUser.GetAll();
+            var userList = _unitOfWork.ApplicationUser.GetAll().OrderByDescending(user => user.Id);
             return Json(new { data = userList });
         }
 

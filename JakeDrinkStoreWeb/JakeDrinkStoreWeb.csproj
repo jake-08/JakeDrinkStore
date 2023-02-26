@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\drink-images\" />
+    <Folder Include="wwwroot\Email Template\" />
   </ItemGroup>
 
 </Project>

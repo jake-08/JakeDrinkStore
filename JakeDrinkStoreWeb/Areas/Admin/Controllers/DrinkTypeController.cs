@@ -18,7 +18,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
         // GET
         public IActionResult Index()
         {
-            IEnumerable<DrinkType> drinkTypeList = _unitOfWork.DrinkType.GetAll();
+            IEnumerable<DrinkType> drinkTypeList = _unitOfWork.DrinkType.GetAll().OrderByDescending(drinkType => drinkType.CreatedDateTime);
             return View(drinkTypeList);
         }
 

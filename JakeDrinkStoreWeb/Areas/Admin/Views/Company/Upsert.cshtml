@@ -1,5 +1,9 @@
 ﻿@model Company
 
+@{
+    ViewData["Title"] = (Model.Id != 0 ? "Update" : "Create") + " Company";
+}
+
 <form method="post" asp-action="Upsert">
     <input asp-for="Id" hidden />
 
