@@ -1,11 +1,11 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Manage Account";
+    ViewData["Title"] = "Edit Account";
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h1 class="pt-4">@ViewData["Title"]</h1>
+<h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
     <div class="col-md-6">
@@ -16,11 +16,31 @@
                 <label asp-for="Username" class="form-label"></label>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                <input asp-for="Input.Name" class="form-control" aria-required="true" />
+                <label asp-for="Input.Name"></label>
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
             </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" />
+                <label asp-for="Input.PhoneNumber"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.StreetAddress" class="form-control" aria-required="true" />
+            <label asp-for="Input.StreetAddress"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Suburb" class="form-control" aria-required="true" />
+                <label asp-for="Input.Suburb"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.State" class="form-control" aria-required="true" />
+                <label asp-for="Input.State"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Postcode" class="form-control" aria-required="true" />
+                <label asp-for="Input.Postcode"></label>
+            </div>
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Update</button>
         </form>
     </div>
 </div>

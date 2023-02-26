@@ -2,10 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+using JakeDrinkStore.DataAccess.Repository;
+using JakeDrinkStore.DataAccess.Repository.IRepository;
+using JakeDrinkStore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,13 +17,16 @@ namespace JakeDrinkStoreWeb.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IUnitOfWork _unitOfWork;
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -55,27 +59,41 @@ namespace JakeDrinkStoreWeb.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            [Required]
+            public string Name { get; set; }
+
+            [DisplayName("Phone Number")]
+            public string? PhoneNumber { get; set; }
+            [DisplayName("Street Address")]
+            public string? StreetAddress { get; set; }
+            public string? Suburb { get; set; }
+            public string? State { get; set; }
+            public string? Postcode { get; set; }
         }
 
         private async Task LoadAsync(IdentityUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+
+            ApplicationUser applicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == user.Id);
 
             Username = userName;
-
+           
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                Name = applicationUser.Name,
+                PhoneNumber = applicationUser.PhoneNumber,
+                StreetAddress = applicationUser.StreetAddress,
+                Suburb = applicationUser.Suburb,
+                State = applicationUser.State,
+                Postcode = applicationUser.Postcode,  
             };
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+            
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -99,16 +117,17 @@ namespace JakeDrinkStoreWeb.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
-            {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
-                }
-            }
+            ApplicationUser dbUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == user.Id);
+
+            dbUser.Name = Input.Name;
+            dbUser.StreetAddress = Input.StreetAddress;
+            dbUser.Suburb = Input.Suburb;
+            dbUser.State = Input.State;
+            dbUser.Postcode = Input.Postcode;
+            dbUser.PhoneNumber = Input.PhoneNumber;
+
+            _unitOfWork.ApplicationUser.Update(dbUser);
+            _unitOfWork.Save();
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using JakeDrinkStore.Models;
 using JakeDrinkStore.Utility;
+using System.ComponentModel;
 
 namespace JakeDrinkStoreWeb.Areas.Identity.Pages.Account
 {
@@ -88,7 +89,9 @@ namespace JakeDrinkStoreWeb.Areas.Identity.Pages.Account
             public string Email { get; set; }
             [Required]
             public string Name { get; set; }
+            [DisplayName("Phone Number")]
             public string? PhoneNumber { get; set; }
+            [DisplayName("Street Address")]
             public string? StreetAddress { get; set; }
             public string? Suburb { get; set; }
             public string? State { get; set; }
