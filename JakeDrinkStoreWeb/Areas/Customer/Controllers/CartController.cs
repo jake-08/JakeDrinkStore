@@ -15,11 +15,14 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+		private readonly IEmailSender _emailSender;
+
 		[BindProperty] // Bind Property to use the ShoppingCartVM throughtout this controller
         public ShoppingCartVM ShoppingCartVM { get; set; }
-        public CartController(IUnitOfWork unitOfWork)
+        public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender)
         {
             _unitOfWork = unitOfWork;
+            _emailSender = emailSender;
         }
 		#region Index Page
 		public IActionResult Index()
@@ -334,8 +337,11 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 				}
 			}
 
-			// Remove the items in the Shopping Carts 
-			List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
+            // Once Order is confirmed, send an email 
+            _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email, "New Order - Jake Book Store", "<p>New Order Created</p>");
+
+            // Remove the items in the Shopping Carts 
+            List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
 			_unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
 			_unitOfWork.Save();
 
