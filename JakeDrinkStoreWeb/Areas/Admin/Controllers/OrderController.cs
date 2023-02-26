@@ -133,7 +133,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
 				if (session.PaymentStatus.ToLower() == "paid")
 				{
 					_unitOfWork.OrderHeader.UpdateStripePaymentId(orderHeaderId, orderHeader.SessionId, session.PaymentIntentId);
-					_unitOfWork.OrderHeader.UpdateStatus(orderHeaderId, SD.StatusApproved, SD.PaymentStatusApproved);
+					_unitOfWork.OrderHeader.UpdateStatus(orderHeaderId, SD.OrderStatusApproved, SD.PaymentStatusApproved);
 					_unitOfWork.Save();
 				}
 			}
@@ -176,7 +176,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
 		[ValidateAntiForgeryToken]
 		public IActionResult StartProcessing()
 		{
-			_unitOfWork.OrderHeader.UpdateStatus(OrderVM.OrderHeader.Id, SD.StatusInProcess);
+			_unitOfWork.OrderHeader.UpdateStatus(OrderVM.OrderHeader.Id, SD.OrderStatusInProcess);
 			_unitOfWork.Save();
 			TempData["Success"] = "Order Started Processing Successfully.";
 			return RedirectToAction("Details", "Order", new { orderHeaderId = OrderVM.OrderHeader.Id });
@@ -190,7 +190,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
 			var orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == OrderVM.OrderHeader.Id, tracked: false);
 			orderHeader.TrackingNumber = OrderVM.OrderHeader.TrackingNumber;
 			orderHeader.Carrier = OrderVM.OrderHeader.Carrier;
-			orderHeader.OrderStatus = SD.StatusCompleted;
+			orderHeader.OrderStatus = SD.OrderStatusCompleted;
 			orderHeader.ShippingDate = DateTime.Now;
 			if (orderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment)
 			{
@@ -219,11 +219,11 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
 				var service = new RefundService();
 				Refund refund = service.Create(options);
 
-				_unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, SD.StatusCancelled, SD.StatusRefunded);
+				_unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, SD.OrderStatusCancelled, SD.PaymentStatusRefunded);
 			}
 			else
 			{
-				_unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, SD.StatusCancelled, SD.StatusCancelled);
+				_unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, SD.OrderStatusCancelled, SD.OrderStatusCancelled);
 			}
 			_unitOfWork.Save();
 
@@ -260,13 +260,13 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
                     orderHeaders = orderHeaders.Where(u => u.PaymentStatus == SD.PaymentStatusPending || u.PaymentStatus == SD.PaymentStatusDelayedPayment);
                     break;
                 case "inprocess":
-                    orderHeaders = orderHeaders.Where(u => u.OrderStatus == SD.StatusInProcess);
+                    orderHeaders = orderHeaders.Where(u => u.OrderStatus == SD.OrderStatusInProcess);
                     break;
                 case "approved":
-                    orderHeaders = orderHeaders.Where(u => u.OrderStatus == SD.StatusApproved);
+                    orderHeaders = orderHeaders.Where(u => u.OrderStatus == SD.OrderStatusApproved);
                     break;
                 case "completed":
-                    orderHeaders = orderHeaders.Where(u => u.OrderStatus == SD.StatusCompleted);
+                    orderHeaders = orderHeaders.Where(u => u.OrderStatus == SD.OrderStatusCompleted);
                     break;
                 default:
                     break;

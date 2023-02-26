@@ -13,13 +13,16 @@ namespace JakeDrinkStore.Utility
         public const string Role_Admin = "Admin";
 
 		// Pending Status is where Order is placed and didn't complete the payment
-		public const string StatusPending = "Pending";
+		public const string OrderStatusPending = "Pending";
 		// Approved Status is where Order is placed and complete the payment
-		public const string StatusApproved = "Approved";
-		public const string StatusInProcess = "Processing";
-		public const string StatusCompleted = "Completed";
-		public const string StatusCancelled = "Cancelled";
-		public const string StatusRefunded = "Refunded";
+		public const string OrderStatusApproved = "Approved";
+		// Processing when Admin User Start Processing
+		public const string OrderStatusInProcess = "Processing";
+		// Completed when the order is shipped
+		public const string OrderStatusCompleted = "Completed";
+		// Cancel the order before shipping
+		public const string OrderStatusCancelled = "Cancelled";
+		
 
         // Pending Payment Status is where Order is placed and didn't complete the payment
         public const string PaymentStatusPending = "Pending";
@@ -27,7 +30,9 @@ namespace JakeDrinkStore.Utility
         public const string PaymentStatusApproved = "Approved";
 		// Delayed Payment Status is for Company Users where Payment can be made within 30 days 
 		public const string PaymentStatusDelayedPayment = "Delayed Payment";
-		public const string PaymentStatusRejected = "Rejected";
-		public const string SessionCart = "SessionShoppingCart";
+		// Payment Refunded when order is refunced
+        public const string PaymentStatusRefunded = "Refunded";
+
+        public const string SessionCart = "SessionShoppingCart";
 	}
 }

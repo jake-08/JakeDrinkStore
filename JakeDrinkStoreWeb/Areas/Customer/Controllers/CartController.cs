@@ -24,6 +24,7 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
             _emailSender = emailSender;
         }
+
 		#region Index Page
 		public IActionResult Index()
         {
@@ -60,6 +61,10 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 			if (cart.Count <= 1)
 			{
 				_unitOfWork.ShoppingCart.Remove(cart);
+				if (cart.CaseCount == 0)
+				{
+                    ClearShoppingCartSession(cart);
+                }
 			}
 			else
 			{
@@ -75,11 +80,15 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 			if (cart.CaseCount >= 1)
 			{
 				_unitOfWork.ShoppingCart.DecrementCount(cart, cart.Count);
-			}
+            }
 			else
 			{
 				_unitOfWork.ShoppingCart.Remove(cart);
-			}
+                if (cart.CaseCount == 0)
+                {
+                    ClearShoppingCartSession(cart);
+                }
+            }
 			_unitOfWork.Save();
 			return RedirectToAction(nameof(Index));
 		}
@@ -98,6 +107,10 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
             if (cart.CaseCount <= 1)
             {
                 _unitOfWork.ShoppingCart.Remove(cart);
+                if (cart.Count == 0)
+                {
+                    ClearShoppingCartSession(cart);
+                }
             }
             else
             {
@@ -117,7 +130,11 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 			else
 			{
 				_unitOfWork.ShoppingCart.Remove(cart);
-			}
+                if (cart.Count == 0)
+                {
+                    ClearShoppingCartSession(cart);
+                }
+            }
 			_unitOfWork.Save();
 			return RedirectToAction(nameof(Index));
 		}
@@ -145,6 +162,12 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 				return casePrice;
 			}
 		}
+
+		private void ClearShoppingCartSession(ShoppingCart cart)
+		{
+            var count = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cart.ApplicationUserId).ToList().Count - 1;
+            HttpContext.Session.SetInt32(SD.SessionCart, count);
+        }
 		#endregion Index Page
 
 		#region Summary and Confirmation Page
@@ -193,7 +216,7 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 			ShoppingCartVM.ListCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value, includeProperties: "Product");
 
 			ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
-			ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
+			ShoppingCartVM.OrderHeader.OrderStatus = SD.OrderStatusPending;
 			ShoppingCartVM.OrderHeader.OrderDate = System.DateTime.Now;
 			ShoppingCartVM.OrderHeader.ApplicationUserId = claim.Value;
 
@@ -214,13 +237,13 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
             if (applicationUser.CompanyId.GetValueOrDefault() == 0)
             {
                 ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
-                ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
+                ShoppingCartVM.OrderHeader.OrderStatus = SD.OrderStatusPending;
             }
 			// If it is a Company User
             else
             {
                 ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusDelayedPayment;
-                ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusApproved;
+                ShoppingCartVM.OrderHeader.OrderStatus = SD.OrderStatusApproved;
 				ShoppingCartVM.OrderHeader.PaymentDueDate = DateTime.Now.AddDays(30);
             }
 
@@ -332,7 +355,7 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 					// Update the PaymentIntentId
 					_unitOfWork.OrderHeader.UpdateStripePaymentId(id, orderHeader.SessionId, session.PaymentIntentId);
 					// Update Order Status
-					_unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
+					_unitOfWork.OrderHeader.UpdateStatus(id, SD.OrderStatusApproved, SD.PaymentStatusApproved);
 					_unitOfWork.Save();
 				}
 			}

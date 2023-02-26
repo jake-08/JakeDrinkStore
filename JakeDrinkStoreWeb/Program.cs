@@ -49,6 +49,15 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
 
+// Add Session for Shopping Cart 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(100);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -67,8 +76,10 @@ StripeConfiguration.ApiKey = builder.Configuration.GetSection("StripeSettings:Se
 
 app.UseRouting();
 app.UseAuthentication();
-
 app.UseAuthorization();
+
+// Use Session in the application
+app.UseSession();
 
 // MapRazorPage function for Identity Pages
 app.MapRazorPages();

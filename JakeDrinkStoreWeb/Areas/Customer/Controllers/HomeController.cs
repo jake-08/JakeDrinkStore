@@ -58,14 +58,19 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
             if (cartFromDb == null)
             {
                 _unitOfWork.ShoppingCart.Add(shoppingCart);
+                _unitOfWork.Save();
+                // Add Http Integer Session and set key value pair for ShoppingCart count
+                HttpContext.Session.SetInt32(
+                    SD.SessionCart,
+                    _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value).ToList().Count
+                );
             }
             else
             {
                 _unitOfWork.ShoppingCart.IncrementCount(cartFromDb, shoppingCart.Count);
                 _unitOfWork.ShoppingCart.IncrementCaseCount(cartFromDb, shoppingCart.CaseCount);
-            }
-            _unitOfWork.Save();
-
+                _unitOfWork.Save();
+            } 
             return RedirectToAction("Index");
         }
 
