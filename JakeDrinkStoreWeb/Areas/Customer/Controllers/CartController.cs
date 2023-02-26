@@ -368,9 +368,11 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 			_unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
 			_unitOfWork.Save();
 
+			// Clear the session after ordering
+			HttpContext.Session.Clear();
+
 			return View(id);
 		}
 		#endregion Summary and Confirmation Page
-
 	}
 }
