@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using JakeDrinkStore.Utility;
 using Stripe;
+using JakeDrinkStore.DataAccess.DbInitializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,9 @@ builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
 // Register IUnitOfWork to the container
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Register IDbInitializer 
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();   
 
 // Change Default Login Paths to Identity Paths
 builder.Services.ConfigureApplicationCookie(options =>
@@ -88,6 +92,9 @@ app.UseAuthorization();
 // Use Session in the application
 app.UseSession();
 
+// Call DbInitilizer method
+SeedDatabase();
+
 // MapRazorPage function for Identity Pages
 app.MapRazorPages();
 
@@ -96,3 +103,13 @@ app.MapControllerRoute(
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+         var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>(); 
+         dbInitializer.Initialize();
+    }
+}
