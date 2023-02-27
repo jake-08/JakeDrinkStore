@@ -53,7 +53,7 @@
                                 <div>1 (@Model.Product.QuantityPerCase items)</div>
                             </div>
                             <div class="p-1 col-3 bg-light border-bottom">
-                                <div>> @Model.Product.MinBulkCase cases</div>
+                                <div>>= @Model.Product.MinBulkCase cases</div>
                             </div>
                         </div>
                         <div class="row text-center ms-0 text-primary" style="font-weight:bold">
@@ -73,7 +73,7 @@
                         <div class="row pt-4">
                             <div class="col-4 text-primary d-flex align-items-center"><h5 class="mb-0">Individual <i data-toggle="tooltip" data-placement="top" title="Price will be calcuated using individual price only"><i class="bi bi-info-circle"></i></i></h5></div>
                             <div class="col-2">
-                                <input asp-for="Count" min="1" class="form-control" />
+                                <input asp-for="Count" class="form-control" />
                             </div>
                             <span asp-validation-for="Count" class="text-danger mt-1"></span>
                         </div>

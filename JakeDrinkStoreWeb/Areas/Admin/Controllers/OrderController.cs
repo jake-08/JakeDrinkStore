@@ -48,8 +48,9 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
 			OrderVM.OrderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == OrderVM.OrderHeader.Id, includeProperties: "ApplicationUser");
 			OrderVM.OrderDetails = _unitOfWork.OrderDetails.GetAll(u => u.OrderHeaderId == OrderVM.OrderHeader.Id, includeProperties: "Product");
 
-			// Stripe Settings
-			var domain = "https://localhost:44367/";
+            // Stripe Settings
+            //var domain = "https://localhost:44367/";
+            var domain = "https://jakedrinkstoreweb.azurewebsites.net/";
 			var options = new SessionCreateOptions
 			{
 				LineItems = new List<SessionLineItemOptions>(),
