@@ -19,38 +19,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary float" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        <i class="bi bi-question my-float"></i>
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLabel">Jake Book Store Guide</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h5 class="text-info fw-bold">User Logins</h5>
-                    <p>There are three types of Login Users in the Application. The password for all the users is <i class="text-primary">Pa$$w0rd</i></p>
-                    <ul>
-                        <li>Admin User - <i class="text-primary">admin@jakelin.com.au</i></li>
-                        <li>Customer User - <i class="text-primary">customer@jakelin.com.au</i></li>
-                        <li>Company User - <i class="text-primary">company@jakelin.com.au</i></li>
-                    </ul>
-                    <h5 class="text-info fw-bold">Stripe Payment Card</h5>
-                    <p>This is a Testing Card for Stripe Payment.</p>
-                    <ul>
-                        <li>Card Number - <i class="text-primary">4242 4242 4242 4242</i></li>
-                        <li>Expiry Date - <i class="text-primary">12 / 34</i></li>
-                        <li>CVC - <i class="text-primary">123</i></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+    <partial name="_HelpButtonPartial" />
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary fw-normal py-3">
             <div class="container">
