@@ -267,6 +267,9 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 			_unitOfWork.ShoppingCart.RemoveRange(ShoppingCartVM.ListCart);
 			_unitOfWork.Save();
 
+			// Clear the session after ordering
+			HttpContext.Session.Clear();
+
 			// Go to Stripe payment if it is not Company User, Compnay Users have 30 days delayed payment  
 			if (applicationUser.CompanyId.GetValueOrDefault() == 0)
 			{
