@@ -265,7 +265,15 @@
 								}
 								@if (Model.OrderHeader.OrderStatus == SD.OrderStatusApproved && Model.OrderHeader.PaymentStatus == SD.PaymentStatusApproved)
 								{
-									<h3>Waiting for the order to be processed!</h3>
+									<h5 class="text-warning fw-bold">Waiting for the order to be processed by Admin.</h5>
+								}
+								@if (Model.OrderHeader.OrderStatus == SD.OrderStatusInProcess && Model.OrderHeader.PaymentStatus == SD.PaymentStatusApproved)
+								{
+									<h5 class="text-warning fw-bold">We are currently processing your order.</h5>
+								}
+								@if (Model.OrderHeader.OrderStatus == SD.OrderStatusCompleted && Model.OrderHeader.PaymentStatus == SD.PaymentStatusApproved)
+								{
+									<h5 class="text-warning fw-bold">Your order has been completed and shipped.</h5>
 								}
 							}
 							
