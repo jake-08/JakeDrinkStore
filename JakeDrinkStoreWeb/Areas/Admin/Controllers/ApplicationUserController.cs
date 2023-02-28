@@ -130,7 +130,7 @@ namespace JakeDrinkStoreWeb.Areas.Admin.Controllers
             // If Role is Admin, return Cannot be deleted error
             if (userRoles.Contains("Admin"))
             {
-                return Json(new { success = false, message = "Not Allowed - Admin User Cannot be deleted" });
+                return Json(new { success = false, message = "Not Allowed - Admin User cannot be deleted" });
             }
             else
             {

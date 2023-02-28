@@ -32,27 +32,27 @@
                 </div>
                 <div class="mb-3 col-6">
                     <label asp-for="Product.ListPrice"></label>
-                    <input asp-for="Product.ListPrice" class="form-control" />
+                    <input asp-for="Product.ListPrice" min="1" class="form-control" />
                     <span asp-validation-for="Product.ListPrice" class="text-danger"></span>
                 </div>
                 <div class="mb-3 col-6">
                     <label asp-for="Product.CasePrize"></label>
-                    <input asp-for="Product.CasePrize" class="form-control" />
+                    <input asp-for="Product.CasePrize" min="1" class="form-control" />
                     <span asp-validation-for="Product.CasePrize" class="text-danger"></span>
                 </div>
                 <div class="mb-3 col-6">
                     <label asp-for="Product.QuantityPerCase"></label>
-                    <input asp-for="Product.QuantityPerCase" class="form-control" />
+                    <input asp-for="Product.QuantityPerCase" min="1" class="form-control" />
                     <span asp-validation-for="Product.QuantityPerCase" class="text-danger"></span>
                 </div>
                 <div class="mb-3 col-6">
                     <label asp-for="Product.BulkCasePrice"></label>
-                    <input asp-for="Product.BulkCasePrice" class="form-control" />
+                    <input asp-for="Product.BulkCasePrice" min="1" class="form-control" />
                     <span asp-validation-for="Product.BulkCasePrice" class="text-danger"></span>
                 </div>
                 <div class="mb-3 col-6">
                     <label asp-for="Product.MinBulkCase"></label>
-                    <input asp-for="Product.MinBulkCase" class="form-control" />
+                    <input asp-for="Product.MinBulkCase" min="1" class="form-control" />
                     <span asp-validation-for="Product.MinBulkCase" class="text-danger"></span>
                 </div>
                 <div class="mb-3">

@@ -271,8 +271,10 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 			if (applicationUser.CompanyId.GetValueOrDefault() == 0)
 			{
 				// Stripe Settings
-				var domain = "https://localhost:44367/";
-				var options = new SessionCreateOptions
+				//var domain = "https://localhost:44367/";
+				var domain = "https://jakedrinkstoreweb.azurewebsites.net/";
+
+                var options = new SessionCreateOptions
 				{
 					LineItems = new List<SessionLineItemOptions>(),
 					Mode = "payment",
