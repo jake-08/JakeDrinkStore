@@ -43,7 +43,7 @@ namespace JakeDrinkStore.Utility
 
             // SendGrid Configuration
             var client = new SendGridClient(SendGridSecret);
-            var from = new EmailAddress("linweichen08@gmail.com", "Jake Book Store");
+            var from = new EmailAddress("linweichen08@gmail.com", "Jake Drink Store");
             var to = new EmailAddress(email);
             var msg = MailHelper.CreateSingleEmail(from, to, subject, "", htmlMessage);
             return client.SendEmailAsync(msg);
