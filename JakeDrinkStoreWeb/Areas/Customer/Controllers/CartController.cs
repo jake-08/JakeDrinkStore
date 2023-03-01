@@ -366,7 +366,7 @@ namespace JakeDrinkStoreWeb.Areas.Customer.Controllers
 			}
 
             // Once Order is confirmed, send an email 
-            _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email, "New Order - Jake Book Store", "<p>New Order Created</p>");
+            _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email, "New Order - Jake Drink Store", "<p>New Order Created</p>");
 
             // Remove the items in the Shopping Carts 
             List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
