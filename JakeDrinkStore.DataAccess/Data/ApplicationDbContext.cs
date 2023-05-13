@@ -19,5 +19,15 @@ namespace JakeDrinkStore.DataAccess
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<OrderHeader> OrderHeaders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
+
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Set Scehema Name e.g. -> drinkstore.Tags
+            modelBuilder.HasDefaultSchema("drinkstore");
+
+            // this method is for IdentityDbContext, otherwise will get error
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

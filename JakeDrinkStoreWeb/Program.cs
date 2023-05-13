@@ -2,6 +2,7 @@ using JakeDrinkStore.DataAccess;
 using JakeDrinkStore.DataAccess.Repository;
 using JakeDrinkStore.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -20,11 +21,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 // To allow Razor Page Refresh
-builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); 
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 // Add Database Connection from appsettings.json and add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-    builder.Configuration.GetConnectionString("DefaultConnection"))
+    builder.Configuration.GetConnectionString("DefaultConnection"), o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "drinkstore"))
 );
 
 // Configure Stripe Settings

@@ -17,6 +17,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("drinkstore")
                 .HasAnnotation("ProductVersion", "7.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -51,7 +52,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", "drinkstore");
                 });
 
             modelBuilder.Entity("JakeDrinkStore.Models.DrinkType", b =>
@@ -69,7 +70,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DrinkTypes");
+                    b.ToTable("DrinkTypes", "drinkstore");
                 });
 
             modelBuilder.Entity("JakeDrinkStore.Models.OrderDetails", b =>
@@ -104,7 +105,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", "drinkstore");
                 });
 
             modelBuilder.Entity("JakeDrinkStore.Models.OrderHeader", b =>
@@ -180,7 +181,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("OrderHeaders");
+                    b.ToTable("OrderHeaders", "drinkstore");
                 });
 
             modelBuilder.Entity("JakeDrinkStore.Models.Product", b =>
@@ -230,7 +231,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
 
                     b.HasIndex("DrinkTypeId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", "drinkstore");
                 });
 
             modelBuilder.Entity("JakeDrinkStore.Models.ProductTag", b =>
@@ -258,7 +259,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("ProductTags");
+                    b.ToTable("ProductTags", "drinkstore");
                 });
 
             modelBuilder.Entity("JakeDrinkStore.Models.ShoppingCart", b =>
@@ -294,7 +295,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ShoppingCarts");
+                    b.ToTable("ShoppingCarts", "drinkstore");
                 });
 
             modelBuilder.Entity("JakeDrinkStore.Models.Tag", b =>
@@ -314,7 +315,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", "drinkstore");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -341,7 +342,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("AspNetRoles", "drinkstore");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -366,7 +367,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
+                    b.ToTable("AspNetRoleClaims", "drinkstore");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
@@ -435,7 +436,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("AspNetUsers", "drinkstore");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
 
@@ -464,7 +465,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
+                    b.ToTable("AspNetUserClaims", "drinkstore");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -486,7 +487,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
+                    b.ToTable("AspNetUserLogins", "drinkstore");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -501,7 +502,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
+                    b.ToTable("AspNetUserRoles", "drinkstore");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -520,7 +521,7 @@ namespace JakeDrinkStore.DataAccess.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens", (string)null);
+                    b.ToTable("AspNetUserTokens", "drinkstore");
                 });
 
             modelBuilder.Entity("JakeDrinkStore.Models.ApplicationUser", b =>
